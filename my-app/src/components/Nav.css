@@ -1,0 +1,1012 @@
+
+/* Add this CSS in your stylesheet or a styled-component's styled component */
+
+/* Dropdown button style */
+.dropdown button {
+  background-color: #fff; /* Background color of the button */
+  color: #333; /* Text color of the button */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 4px; /* Border radius */
+  padding: 8px 16px; /* Padding */
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Dropdown menu style */
+.dropdown .dropdown-menu {
+  background-color: #fff; /* Background color of the menu */
+  border: 1px solid #ccc; /* Border color */
+}
+
+.dropdown .dropdown-item {
+  color: #333; /* Text color of the items */
+  padding: 8px 16px; /* Padding for the items */
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.dropdown .dropdown-item:hover {
+  background-color: #f0f0f0; /* Background color on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+.cart-sidebar {
+    position: fixed;
+    top:0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: #fff; 
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2); 
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .cart-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .cart-close-button:hover {
+    color: #ff0000;
+  }
+  
+  .cart-sidebar p {
+    font-size: 22px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .emptycart_img {
+    width: 100%;
+    max-width: 300px; 
+    padding: 10px;
+  }
+  
+
+  .cart-trolley--link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333; 
+  }
+
+  
+  .cart-item-count {
+    font-size: 20px; 
+    font-weight: bold; 
+  }
+  
+  .cart-trolley {
+    font-size: 30px; 
+    margin-right: 10px;
+  }
+  
+  .cart-total--item {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    background-color: #ff0000; 
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    font-size: 14px; 
+  }
+  
+
+
+
+
+
+
+
+ */
+
+/*----------------------------------------------------------------
+updated code working cart and all
+
+
+
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { FiShoppingCart } from "react-icons/fi";
+import { CgMenu, CgClose } from "react-icons/cg";
+import { DLT } from "../redux/actions/action";
+import { useDispatch, useSelector } from "react-redux";
+import Table from "react-bootstrap/esm/Table";
+// import Menu from "@mui/material/Menu";
+// import MenuItem from "@mui/material/MenuItem";
+import { MdArrowBack } from "react-icons/md";
+
+// import "./style.css";
+import { REMOVE, ADD } from "../redux/actions/action";
+
+const Nav = () => {
+  const [menuIcon, setMenuIcon] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const [price, setPrice] = useState(0);
+  // console.log(price);
+
+  //! this is used to get the  items on the cart ye hm khi v use kr or cards ki item ko khi v get kr skte hai
+  const getdata = useSelector((state) => state.cartreducer.carts);
+  console.log(getdata);
+
+  const dispatch = useDispatch();
+
+  const dlt = (id) => {
+    dispatch(DLT(id));
+  };
+
+  // add data
+
+  const send = (e) => {
+    // console.log(e);
+    dispatch(ADD(e));
+  };
+
+  // remove one
+  const remove = (item) => {
+    dispatch(REMOVE(item));
+  };
+
+  const total = () => {
+    let price = 0;
+    getdata.map((ele, k) => {
+      price = ele.price * ele.qnty + price;
+    });
+    setPrice(price);
+  };
+
+  useEffect(() => {
+    total();
+  }, [total]);
+
+  // working on card menu when we add any item then it show that particular items
+
+  const Nav = styled.nav`
+    .navbar-lists {
+      display: flex;
+      gap: 4.8rem;
+      align-items: center;
+      z-index: 9999;
+
+      .navbar-link {
+        &:link,
+        &:visited {
+          display: inline-block;
+          text-decoration: none;
+          font-size: 1.8rem;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: ${({ theme }) => theme.colors.black};
+          transition: color 0.3s linear;
+        }
+
+        &:hover,
+        &:active {
+          color: ${({ theme }) => theme.colors.helper};
+        }
+      }
+    }
+
+    //! side bar cart  code........
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width:100%;
+      width: 350px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+    }
+    .cart-table-header {
+      border-bottom: 2px solid #000;
+      font-weight: bold; 
+    }
+
+    .cart-sidebar p {
+      font-size: 18px; // cart size variable
+      margin-bottom: 7px;
+      color: #212529;
+      text-align: center;
+    }
+
+    //! side bar cart css images
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      margin-left: 40px;
+    }
+
+    .heading {
+      font-size: 24px;
+      margin: 0;
+      margin-top: -100px;
+    }
+
+    .emptycart_img {
+      display: flex;
+      width: 200px;
+      align-items: center;
+    }
+
+    
+    .cart-trolley--link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333; 
+    }
+
+   
+    .cart-item-count {
+      font-size: 20px; 
+      font-weight: bold;
+    }
+
+    .cart-trolley {
+      font-size: 30px; 
+      margin-right: 10px;
+    }
+
+    .cart-total--item {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      background-color: #ff0000; 
+      color: #fff; 
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0;
+      right: 0;
+      font-size: 14px;
+    }
+
+    .mobile-navbar-btn {
+      display: none;
+      background-color: transparent;
+      cursor: pointer;
+      border: none;
+    }
+
+    .mobile-nav-icon[name="close-outline"] {
+      display: none;
+    }
+
+    .close-outline {
+      display: none;
+    }
+
+    .cart-trolley--link {
+      position: relative;
+
+      .cart-trolley {
+        position: relative;
+        font-size: 3.2rem;
+      }
+
+      .cart-total--item {
+        width: 2.4rem;
+        height: 2.4rem;
+        position: absolute;
+        background-color: #000;
+        color: #000;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        top: -20%;
+        left: 70%;
+        background-color: ${({ theme }) => theme.colors.helper};
+      }
+    }
+
+    .user-login--name {
+      text-transform: capitalize;
+    }
+
+    .user-logout,
+    .user-login {
+      font-size: 1.4rem;
+      padding: 0.8rem 1.4rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
+      .mobile-navbar-btn {
+        display: inline-block;
+        z-index: 9999;
+        border: ${({ theme }) => theme.colors.black};
+
+        .mobile-nav-icon {
+          font-size: 4.2rem;
+          color: ${({ theme }) => theme.colors.black};
+        }
+      }
+
+      .active .mobile-nav-icon {
+        display: none;
+        font-size: 4.2rem;
+        position: absolute;
+        top: 30%;
+        right: 10%;
+        color: ${({ theme }) => theme.colors.black};
+        z-index: 9999;
+      }
+
+      .active .close-outline {
+        display: inline-block;
+      }
+
+      .navbar-lists {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(100%);
+        
+        transition: all 3s linear;
+      }
+
+      .active .navbar-lists {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0);
+        z-index: 9999;
+        transform-origin: left;
+        transition: all 3s linear;
+
+        .navbar-link {
+          font-size: 4.2rem;
+        }
+      }
+      .cart-trolley--link {
+        position: relative;
+
+        .cart-trolley {
+          position: relative;
+          font-size: 5.2rem;
+        }
+
+        .cart-total--item {
+          width: 4.2rem;
+          height: 4.2rem;
+          font-size: 2rem;
+        }
+      }
+
+      .user-logout,
+      .user-login {
+        font-size: 2.2rem;
+        padding: 0.8rem 1.4rem;
+      }
+    }
+  `;
+
+  return (
+    <Nav>
+      <div className={menuIcon ? "active" : "navbar"}>
+        <ul className="navbar-lists">
+          <li>
+            <NavLink
+              to="/"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/about"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              About
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/products"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              Products
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/contact"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              Contact
+            </NavLink>
+          </li>
+          <li>
+            <div
+              className="navbar-link cart-trolley--link"
+              onClick={() => setIsCartOpen(!isCartOpen)}
+              style={{ cursor: "pointer" }}
+            >
+              <FiShoppingCart className="cart-trolley" />
+              <span className="cart-item-count">{getdata.length}</span>
+            </div>
+
+            {isCartOpen && (
+              <div className="cart-sidebar">
+                
+
+                {getdata.length > 0 ? (
+                  <div
+                    className="card-details"
+                    style={{
+                      width: "32rem",
+                      padding: 10,
+                      height: "100%",
+                      maxHeight: "100vh", //here i  Set the maximum height equal to the screen height
+                      overflowY: "auto", // this is used to show the scroll bar
+                    }}
+                  >
+                    <Table>
+                      <thead>
+                        <tr style={{ fontSize: 17 }}>
+                          <th className="cart-table-header">
+                            <MdArrowBack
+                              style={{ cursor: "pointer", fontSize: "25px" }} // Customize the icon size and cursor style
+                              onClick={() => setIsCartOpen(false)} // Add the function to close the menu bar
+                            />
+                            Photo
+                          </th>
+                          <th
+                            className="cart-table-header"
+                            style={{ textAlign: "left", paddingLeft: "50px" }}
+                          >
+                            Items
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {getdata.map((item) => (
+                          <tr key={item.id}>
+                            <td>
+                              <NavLink to={`/cart/${item.id}`}>
+                                <img
+                                  src={item.imgdata}
+                                  style={{
+                                    width: "9rem",
+                                    height: "9rem",
+                                    marginTop: 5,
+                                  }}
+                                  alt=""
+                                />
+                              </NavLink>
+                            </td>
+                            <td>
+                              <p>{item.name}</p>
+                              <p>Price: ₹{item.price}</p>
+
+                          
+                              <p
+                                style={{
+                                  fontSize: 22,
+                                  cursor: "pointer",
+                                  marginLeft: 30,
+                                  width: 100,
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    fontSize: "16px",
+                                    paddingRight: "10px",
+                                  }}
+                                  onClick={
+                                    item.qnty <= 1
+                                      ? () => dlt(item.id)
+                                      : () => remove(item)
+                                  }
+                                >
+                                  <span
+                                    style={{
+                                      backgroundColor: "red",
+                                      color: "white",
+                                      cursor: "pointer",
+                                      display: "inline-block",
+                                      padding: "5px 10px",
+                                      borderRadius: "5px",
+                                      transition: "background-color 0.3s",
+                                    }}
+                                  >
+                                    -
+                                  </span>
+                                </span>
+                                {item.qnty}
+                                <span
+                                  style={{
+                                    fontSize: "16px", // Set the font size to 16px
+                                    cursor: "pointer",
+                                    paddingLeft: "10px",
+                                  }}
+                                  onClick={() => send(item)}
+                                >
+                                  <span
+                                    style={{
+                                      backgroundColor: "green",
+                                      color: "white",
+                                      cursor: "pointer",
+                                      display: "inline-block",
+                                      padding: "5px 10px",
+                                      borderRadius: "5px",
+                                      transition: "background-color 0.3s",
+                                    }}
+                                  >
+                                    +
+                                  </span>
+                                </span>
+                              </p>
+
+                           
+
+                              <p
+                                style={{
+                                  color: "red",
+                                  fontSize: 20,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => dlt(item.id)}
+                              >
+                                <i className="fas fa-trash smalltrash"></i>
+                              </p>
+                            </td>
+                            <td
+                              className="mt-5"
+                              style={{
+                                color: "red",
+                                fontSize: 20,
+                                cursor: "pointer",
+                              }}
+                              onClick={() => dlt(item.id)}
+                            >
+                              <i className="fas fa-trash largetrash"></i>
+                            </td>
+                          </tr>
+                        ))}
+                        <p
+                          className="text-center"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Total: ₹ {price}
+                        </p>
+                      </tbody>
+                    </Table>
+                  </div>
+                ) : (
+                  <div
+                    className="card_details d-flex justify-content-center align-items-center"
+                    style={{
+                      width: "24rem",
+                      padding: 10,
+                      position: "relative",
+                    }}
+                  >
+                    <div className="container">
+                      <p className="heading">Your cart is empty</p>
+                      <img
+                        src="./images/cart.gif"
+                        alt="gif"
+                        className="emptycart_img"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </li>
+        </ul>
+
+        <div className="mobile-navbar-btn">
+          <CgMenu
+            name="menu-outline"
+            className="mobile-nav-icon"
+            onClick={() => setMenuIcon(true)}
+          />
+          <CgClose
+            name="close-outline"
+            className="mobile-nav-icon close-outline"
+            onClick={() => setMenuIcon(false)}
+          />
+        </div>
+      </div>
+    </Nav>
+  );
+};
+
+export default Nav;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+/* =================================================================
+
+the old nav pages 
+
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { FiShoppingCart } from "react-icons/fi";
+import { CgMenu, CgClose } from "react-icons/cg";
+import { DLT } from "../redux/actions/action";
+import { useDispatch, useSelector } from "react-redux";
+import Table from "react-bootstrap/esm/Table";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+
+const Nav = () => {
+  const [menuIcon, setMenuIcon] = useState(false);
+
+  const [price, setPrice] = useState(0);
+  // console.log(price);
+
+  const getdata = useSelector((state) => state.cartreducer.carts);
+  console.log(getdata);
+
+  const dispatch = useDispatch();
+
+  // working on card menu when we add any item then it show that particular items
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const Nav = styled.nav`
+    .navbar-lists {
+      display: flex;
+      gap: 4.8rem;
+      align-items: center;
+         z-index: 9999;
+
+      .navbar-link {
+        &:link,
+        &:visited {
+          display: inline-block;
+          text-decoration: none;
+          font-size: 1.8rem;
+          font-weight: 500;
+          text-transform: uppercase;
+          color: ${({ theme }) => theme.colors.black};
+          transition: color 0.3s linear;
+        }
+
+        &:hover,
+        &:active {
+          color: ${({ theme }) => theme.colors.helper};
+        }
+      }
+    }
+
+    .mobile-navbar-btn {
+      display: none;
+      background-color: transparent;
+      cursor: pointer;
+      border: none;
+    }
+
+    .mobile-nav-icon[name="close-outline"] {
+      display: none;
+    }
+
+    .close-outline {
+      display: none;
+    }
+
+    .cart-trolley--link {
+      position: relative;
+
+      .cart-trolley {
+        position: relative;
+        font-size: 3.2rem;
+      }
+
+      .cart-total--item {
+        width: 2.4rem;
+        height: 2.4rem;
+        position: absolute;
+        background-color: #000;
+        color: #000;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        top: -20%;
+        left: 70%;
+        background-color: ${({ theme }) => theme.colors.helper};
+      }
+    }
+
+    .user-login--name {
+      text-transform: capitalize;
+    }
+
+    .user-logout,
+    .user-login {
+      font-size: 1.4rem;
+      padding: 0.8rem 1.4rem;
+    }
+
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
+      .mobile-navbar-btn {
+        display: inline-block;
+        z-index: 9999;
+        border: ${({ theme }) => theme.colors.black};
+
+        .mobile-nav-icon {
+          font-size: 4.2rem;
+          color: ${({ theme }) => theme.colors.black};
+        }
+      }
+      
+
+      .active .mobile-nav-icon {
+        display: none;
+        font-size: 4.2rem;
+        position: absolute;
+        top: 30%;
+        right: 10%;
+        color: ${({ theme }) => theme.colors.black};
+        z-index: 9999;
+      }
+
+      .active .close-outline {
+        display: inline-block;
+      }
+
+      .navbar-lists {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(100%);
+        
+        transition: all 3s linear;
+      }
+
+      .active .navbar-lists {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0);
+        z-index: 9999;
+        transform-origin: left;
+        transition: all 3s linear;
+
+        .navbar-link {
+          font-size: 4.2rem;
+        }
+      }
+      .cart-trolley--link {
+        position: relative;
+
+        .cart-trolley {
+          position: relative;
+          font-size: 5.2rem;
+        }
+
+        .cart-total--item {
+          width: 4.2rem;
+          height: 4.2rem;
+          font-size: 2rem;
+        }
+      }
+
+      .user-logout,
+      .user-login {
+        font-size: 2.2rem;
+        padding: 0.8rem 1.4rem;
+      }
+    }
+  `;
+
+  return (
+    <Nav>
+      <div className={menuIcon ? " active" : "navbar"}>
+        <ul className="navbar-lists">
+          <li>
+            <NavLink
+              to="/"
+              className="navbar-link "
+              onClick={() => setMenuIcon(false )}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/about"
+              className="navbar-link "
+              onClick={() => setMenuIcon(false)}
+            >
+              About
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/products"
+              className="navbar-link "
+              onClick={() => setMenuIcon(false)}
+            >
+              Products
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/contact"
+              className="navbar-link "
+              onClick={() => setMenuIcon(false)}
+            >
+              Contact
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="" className="navbar-link cart-trolley--link">
+              <FiShoppingCart className="cart-trolley" />
+              <span
+                className="cart-total--item"
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                {getdata.length}
+              </span>
+              <Menu
+              style={{marginTop:60,marginLeft:1700,position:"absolute",width:"40vh",fontSize:23,cursor:"pointer"}}
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                  
+                // MenuListProps={{
+                //   "aria-labelledby": "basic-button",
+                // }}
+              >
+                 <p style={{fontSize:22}}>Your carts is empty</p>
+                    <img src="./images/giphy.gif" alt="" className='emptycart_img' style={{width:"15rem",padding:10}} />
+              </Menu>
+            </NavLink>
+          </li>
+        </ul>
+
+       
+        <div className="mobile-navbar-btn">
+        <CgMenu
+            name="menu-outline"
+            className="mobile-nav-icon"
+            onClick={() => setMenuIcon(true)}
+          />
+          <CgClose
+            name="close-outline"
+            className="mobile-nav-icon close-outline"
+            onClick={() => setMenuIcon(false)}
+          />
+        </div>
+      </div>
+    </Nav>
+  );
+};
+
+export default Nav;
+
+
+
+
+
+ */

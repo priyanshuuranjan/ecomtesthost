@@ -1,0 +1,112 @@
+#success-container {
+  max-width: 700px; /* width control*/
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+/* Style for individual orders */
+.order {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  margin: 20px 0;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order h3 {
+  color: #333;
+}
+
+/* Style for product information */
+.product-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.product-image {
+  width: 110px; /* image size*/
+  height: 100px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+.product-info img {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 5px;
+  margin-right: 10px; /* Add margin to create space between image and text */
+}
+
+.product-info strong {
+  font-weight: bold;
+  color: #555;
+}
+
+/* Style for total price */
+.total-price {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add hover effect on individual orders */
+.order:hover {
+  background-color: #f9f9f9;
+  transform: translateY(-5px);
+  transition: 0.2s ease;
+}
+
+/* Add padding to the entire product order container */
+.order {
+  padding: 20px; /* Add padding to create space between individual orders */
+}
+
+/* Add a subtle animation effect on product images */
+.product-info img {
+  transition: transform 0.2s;
+}
+
+.product-info img:hover {
+  transform: scale(1.1);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f5f5f5;
+}
+
+/*text */
+#success-container {
+  text-align: center;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.product-details {
+  font-size: 15px;
+}
+
+.total-price {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
+}
