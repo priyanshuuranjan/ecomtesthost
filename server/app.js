@@ -5,6 +5,7 @@ const cors = require("cors");
 const stripe = require("stripe")(
   "sk_test_51O98QCSACaXpHsJlm0RTcHoh3ASApUmrIXw68qJCiiJrecg67E6pny4OYUE0awdyuDldvoJIW50Zw0MHUTZdJKC200UUL03OfA"
 );
+const PORT = process.env.PORT || 7000;
 
 app.use(express.json());
 app.use(cors());
